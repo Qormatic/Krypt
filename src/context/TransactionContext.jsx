@@ -6,7 +6,6 @@ import { contractABI, contractAddress } from "../utils/constants";
 export const TransactionContext = React.createContext();
 
 // ethereum object from window.ethereum, object is available due to setting up of MetaMask
-// this object allows us to handle our ethereum and blockchain relation
 const { ethereum } = window;
 
 const createEthereumContract = () => {
@@ -18,7 +17,6 @@ const createEthereumContract = () => {
     };
 
         // Every context provider needs to be passed children and return something
-        // The data we provide in "<TransactionContext.Provider value={{}}" is passed to our React application so we can connect to the BC from there
     export const TransactionsProvider = ({ children }) => {
 	const [formData, setformData] = useState({ addressTo: "", amount: "", keyword: "", message: "" });
 	const [currentAccount, setCurrentAccount] = useState("");
@@ -26,11 +24,7 @@ const createEthereumContract = () => {
 	const [transactionCount, setTransactionCount] = useState(localStorage.getItem("transactionCount"));
 	const [transactions, setTransactions] = useState([]);
 
-	    // we also use the dynamic variable "name" to work with whichever input is chnaged in the formdata
-	    // all handleChange functions that interact with inputs accept the keyboard event as the event (e).
 	const handleChange = (e, name) => {
-	    // as the first parameter react gives you prevState of the inputs which is updated depending on the name
-	    // whenever you are updating the new state using the old state you have to provide a callback function in the state where 
 		setformData((prevState) => ({ ...prevState, [name]: e.target.value }));
 	  };
 
@@ -100,7 +94,6 @@ const createEthereumContract = () => {
 	
 		  const accounts = await ethereum.request({ method: "eth_requestAccounts", });
 		  
-	      // accounts[0] will be to connect first account
 		  setCurrentAccount(accounts[0]);
 	      //window.location.reload();
 		} catch (error) {
@@ -115,13 +108,9 @@ const createEthereumContract = () => {
 			if (!ethereum) return alert("Please install MetaMask.");
 
 			const { addressTo, amount, keyword, message } = formData;
-			// use transactionsContract variable to call all our contract related functions
 			const transactionsContract = createEthereumContract();
-			// "parseEther" is an Ethers utility function we can call which parses decimal amount (FE input) into hexadecimal
 			const parsedAmount = ethers.utils.parseEther(amount);
 
-			// "await ethereum.request" sends eth from one address to another address
-			// eth values are written in hexadecimal as in "gas" below
 			await ethereum.request({
 				method: "eth_sendTransaction",
 				params: [{
@@ -154,7 +143,6 @@ const createEthereumContract = () => {
 		  }
 	    }
 	
-	    // useEffect will run at the start of our application
 	  useEffect(() => {
 		checkIfWalletIsConnect();
 	    checkIfTransactionsExists();

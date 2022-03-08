@@ -20,19 +20,15 @@ const Input = ({ placeholder, name, type, value, handleChange }) => (
 	/>
   );
 
-// <div className="flex flex-col flex-1 items-center justify-start w-full mf:mt-0 mt-10"> is the start of the right side of the page
 const Welcome = () => {
 	const { connectWallet, currentAccount, formData, sendTransaction, handleChange, isLoading  } = useContext(TransactionContext);
 
 	const handleSubmit = (e) => {
 		const { addressTo, amount, keyword, message } = formData;
 
-// "e.preventDefault()" stops a page from reloading after submission of form
 		e.preventDefault();
 
-// Check if user has filled in anything in the form. If nothing input return nothing
 		if (!addressTo || !amount || !keyword || !message) return;
-// else trigger sendTransaction function
 		sendTransaction();
 	  };
 
